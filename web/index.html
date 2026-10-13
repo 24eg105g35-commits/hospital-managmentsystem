@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PulseCare Hospital Management System - Comprehensive Patient, Doctor, and Clinical Appointment Management Platform">
+    <title>PulseCare Hospital Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="app-sidebar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <div class="brand-info">
+                    <span class="brand-title">PulseCare</span>
+                    <span class="brand-subtitle">Clinical Core v2.4</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu" id="main-navigation">
+                <button class="nav-item active" id="nav-btn-overview" data-tab="overview">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="9" rx="1"/>
+                        <rect x="14" y="3" width="7" height="5" rx="1"/>
+                        <rect x="14" y="12" width="7" height="9" rx="1"/>
+                        <rect x="3" y="16" width="7" height="5" rx="1"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" id="nav-btn-appointments" data-tab="appointments">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <span>Appointments</span>
+                    <span class="badge" id="nav-appointment-count">0</span>
+                </button>
+                <button class="nav-item" id="nav-btn-patients" data-tab="patients">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span>Patients</span>
+                    <span class="badge" id="nav-patient-count">0</span>
+                </button>
+                <button class="nav-item" id="nav-btn-doctors" data-tab="doctors">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                    <span>Doctors Staff</span>
+                    <span class="badge" id="nav-doctor-count">0</span>
+                </button>
+                <button class="nav-item" id="nav-btn-schedule" data-tab="schedule">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span>Book Appointment</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <span class="status-indicator online"></span>
+                    <div class="status-text">
+                        <span class="status-label">Database Connected</span>
+                        <span class="status-detail">Local CSV Data Store</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Header Bar -->
+            <header class="top-header">
+                <div class="header-welcome">
+                    <h1 id="page-title">Hospital Executive Dashboard</h1>
+                    <p class="subtitle" id="header-datetime">PulseCare Medical Center &bull; Operational Live Monitoring</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="btn-quick-new-patient">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span>New Patient</span>
+                    </button>
+                    <button class="btn btn-primary" id="btn-quick-book">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        <span>Schedule Visit</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content Container -->
+            <div class="dashboard-body">
+
+                <!-- 1. OVERVIEW TAB -->
+                <section class="tab-pane active" id="tab-overview">
+                    <!-- Stats Metric Row -->
+                    <div class="metrics-grid">
+                        <div class="metric-card cyan">
+                            <div class="metric-header">
+                                <span class="metric-label">Registered Patients</span>
+                                <div class="metric-icon-wrap">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                                </div>
+                            </div>
+                            <div class="metric-value" id="stat-total-patients">0</div>
+                            <div class="metric-footer">
+                                <span class="trend positive">Active Database</span>
+                                <span class="muted-text">Total patient records</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card indigo">
+                            <div class="metric-header">
+                                <span class="metric-label">Attending Doctors</span>
+                                <div class="metric-icon-wrap">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                                </div>
+                            </div>
+                            <div class="metric-value" id="stat-total-doctors">0</div>
+                            <div class="metric-footer">
+                                <span class="trend neutral">Multi-specialty</span>
+                                <span class="muted-text">Licensed clinical staff</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card emerald">
+                            <div class="metric-header">
+                                <span class="metric-label">Scheduled Visits</span>
+                                <div class="metric-icon-wrap">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+                                </div>
+                            </div>
+                            <div class="metric-value" id="stat-total-appointments">0</div>
+                            <div class="metric-footer">
+                                <span class="trend positive">Active Bookings</span>
+                                <span class="muted-text">Conflict-free schedule</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card amber">
+                            <div class="metric-header">
+                                <span class="metric-label">Today's Visits</span>
+                                <div class="metric-icon-wrap">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </div>
+                            </div>
+                            <div class="metric-value" id="stat-today-appointments">0</div>
+                            <div class="metric-footer">
+                                <span class="trend positive">Today's Queue</span>
+                                <span class="muted-text">Immediate consultations</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Split Overview Grid -->
+                    <div class="content-split-grid">
+                        <!-- Upcoming Appointments Card -->
+                        <div class="glass-card flex-2">
+                            <div class="card-header">
+                                <div class="card-title-group">
+                                    <h2>Upcoming Appointments Timeline</h2>
+                                    <p class="card-subtitle">Chronological list of booked consultations</p>
+                                </div>
+                                <button class="btn btn-ghost btn-sm" id="btn-view-all-appointments">View All</button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="data-table" id="table-overview-appointments">
+                                        <thead>
+                                            <tr>
+                                                <th>Time & Date</th>
+                                                <th>Patient</th>
+                                                <th>Doctor & Specialty</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="overview-appointments-body">
+                                            <tr>
+                                                <td colspan="5" class="empty-state">Loading appointments...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Doctors Highlight -->
+                        <div class="glass-card flex-1">
+                            <div class="card-header">
+                                <div class="card-title-group">
+                                    <h2>Medical Specialists</h2>
+                                    <p class="card-subtitle">Available departments</p>
+                                </div>
+                                <button class="btn btn-ghost btn-sm" id="btn-quick-add-doctor">Add</button>
+                            </div>
+                            <div class="card-body">
+                                <div class="doctor-quick-list" id="overview-doctors-list">
+                                    <!-- Rendered dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. APPOINTMENTS TAB -->
+                <section class="tab-pane" id="tab-appointments">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <h2>Appointments Management</h2>
+                                <p class="card-subtitle">Filter, inspect, and manage patient consultations</p>
+                            </div>
+                            <div class="table-actions">
+                                <div class="search-box">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                    <input type="text" id="input-appointment-filter" placeholder="Search patient, doctor, or date...">
+                                </div>
+                                <button class="btn btn-primary" id="btn-tab-book-appointment">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    <span>New Appointment</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table" id="table-full-appointments">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Appointment Date</th>
+                                            <th>Slot Time</th>
+                                            <th>Patient Name</th>
+                                            <th>Attending Doctor</th>
+                                            <th>Specialization</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appointments-table-body">
+                                        <!-- Loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. PATIENTS TAB -->
+                <section class="tab-pane" id="tab-patients">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <h2>Patient Directory & Clinical History</h2>
+                                <p class="card-subtitle">Search, enroll, and view patient clinical details</p>
+                            </div>
+                            <div class="table-actions">
+                                <div class="search-box">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                    <input type="text" id="input-patient-search" placeholder="Search patients by name...">
+                                </div>
+                                <button class="btn btn-primary" id="btn-open-patient-modal">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    <span>Register Patient</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table" id="table-patients">
+                                    <thead>
+                                        <tr>
+                                            <th>PID</th>
+                                            <th>Patient Name</th>
+                                            <th>Age</th>
+                                            <th>Gender</th>
+                                            <th>Contact Phone</th>
+                                            <th>Primary Diagnosis / Reason</th>
+                                            <th>Quick Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="patients-table-body">
+                                        <!-- Loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. DOCTORS TAB -->
+                <section class="tab-pane" id="tab-doctors">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <h2>Medical Specialists & Staff</h2>
+                                <p class="card-subtitle">Consultants and departmental physicians</p>
+                            </div>
+                            <button class="btn btn-primary" id="btn-open-doctor-modal">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                <span>Add Doctor</span>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="doctors-grid" id="doctors-card-grid">
+                                <!-- Loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. SCHEDULE APPOINTMENT TAB -->
+                <section class="tab-pane" id="tab-schedule">
+                    <div class="schedule-form-wrapper">
+                        <div class="glass-card booking-card">
+                            <div class="card-header">
+                                <div class="card-title-group">
+                                    <h2>Schedule Clinical Appointment</h2>
+                                    <p class="card-subtitle">Real-time validation against doctor schedules and calendar conflicts</p>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="form-schedule-appointment" class="custom-form">
+                                    <div class="form-row">
+                                        <div class="form-group flex-1">
+                                            <label for="select-patient">Select Patient <span class="required">*</span></label>
+                                            <select id="select-patient" required>
+                                                <option value="">-- Choose Registered Patient --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group flex-1">
+                                            <label for="select-doctor">Select Doctor <span class="required">*</span></label>
+                                            <select id="select-doctor" required>
+                                                <option value="">-- Choose Specialist Doctor --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group flex-1">
+                                            <label for="input-appointment-date">Appointment Date <span class="required">*</span></label>
+                                            <input type="date" id="input-appointment-date" required>
+                                            <small class="field-hint">Must be present or future date (yyyy-MM-dd)</small>
+                                        </div>
+                                        <div class="form-group flex-1">
+                                            <label for="input-appointment-time">Appointment Time <span class="required">*</span></label>
+                                            <input type="time" id="input-appointment-time" value="10:00" required>
+                                            <small class="field-hint">24-hour clinical format (HH:mm)</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-notification-box" id="schedule-feedback" style="display: none;"></div>
+
+                                    <div class="form-actions">
+                                        <button type="reset" class="btn btn-secondary" id="btn-reset-schedule">Reset Form</button>
+                                        <button type="submit" class="btn btn-primary btn-lg" id="btn-submit-schedule">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                            <span>Confirm & Book Appointment</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Schedule guidelines side card -->
+                        <div class="glass-card guide-card">
+                            <div class="card-header">
+                                <h3>Booking Protocol</h3>
+                            </div>
+                            <div class="card-body">
+                                <ul class="guide-list">
+                                    <li>
+                                        <div class="guide-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                        <div><strong>Zero Double-Booking:</strong> The core validation engine strictly checks that no doctor is scheduled for more than one patient at the exact same date and time slot.</div>
+                                    </li>
+                                    <li>
+                                        <div class="guide-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                                        <div><strong>Future Dates Only:</strong> Past dates cannot be booked into the system to maintain audit integrity.</div>
+                                    </li>
+                                    <li>
+                                        <div class="guide-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg></div>
+                                        <div><strong>Instant File Persistence:</strong> All updates are immediately saved into the system's CSV files in the data directory.</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: Register Patient -->
+    <div class="modal-overlay" id="modal-patient">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Register New Patient</h3>
+                <button class="modal-close-btn" id="btn-close-patient-modal">&times;</button>
+            </div>
+            <form id="form-register-patient">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="patient-name">Full Name <span class="required">*</span></label>
+                        <input type="text" id="patient-name" placeholder="e.g. Johnathan Miller" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="patient-age">Age <span class="required">*</span></label>
+                            <input type="number" id="patient-age" min="0" max="130" placeholder="e.g. 35" required>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="patient-gender">Gender <span class="required">*</span></label>
+                            <select id="patient-gender" required>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="patient-phone" placeholder="e.g. +1 (555) 019-2834" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-disease">Diagnosis / Reason for Visit <span class="required">*</span></label>
+                        <textarea id="patient-disease" rows="2" placeholder="e.g. Acute migraine and light sensitivity" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-patient">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btn-submit-patient">Register Patient</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Add Doctor -->
+    <div class="modal-overlay" id="modal-doctor">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Add Doctor to Medical Staff</h3>
+                <button class="modal-close-btn" id="btn-close-doctor-modal">&times;</button>
+            </div>
+            <form id="form-add-doctor">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="doctor-name">Doctor Name <span class="required">*</span></label>
+                        <input type="text" id="doctor-name" placeholder="e.g. Dr. Arthur Pendelton" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-specialization">Specialization / Department <span class="required">*</span></label>
+                        <input type="text" id="doctor-specialization" placeholder="e.g. Cardiology, Neurology, Dermatology" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-phone">Direct Phone <span class="required">*</span></label>
+                        <input type="tel" id="doctor-phone" placeholder="e.g. +1 (555) 789-0123" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-doctor">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btn-submit-doctor">Add Doctor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

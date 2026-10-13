@@ -1,0 +1,21 @@
+# Compiled Java classes
+*.class
+*/*.class
+
+# Archive files
+*.jar
+*.war
+*.zip
+
+# Virtual machine crash logs
+hs_err_pid*
+replay_pid*
+
+# IDE settings
+.vscode/
+.idea/
+*.iml
+
+# Operating System files
+Thumbs.db
+.DS_Store
